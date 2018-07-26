@@ -11,7 +11,6 @@ services:
         aliases:
          - db
 
-
   db-data:
     image: mongo:latest
     volumes:
@@ -21,20 +20,22 @@ services:
     entrypoint: /bin/true
 
   snomed-api:
-    image: snomedinternational/snomed-snapshot-api:2.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: snomed-api:latest
     links:
-     - db
+      - db
     ports:
-     - "3000:3000"
-     - "35729:35729"
+      - "9999:9999"
+      - "35729:35729"
     environment:
-     - NODE_ENV=development
-     - MONGO_DB_CONN=db:27017
-     - SCT_VERSION=20180131
+      - NODE_ENV=development
+      - MONGO_DB_CONN=db:27017
+      - SCT_VERSION=20180131
+      - PORT=9999
     networks:
-        - snomed
-    command: ["./wait-for-it.sh", "db:27017", "--", "node", "app.js"]
-
+      - snomed
 
 networks:
   snomed:
