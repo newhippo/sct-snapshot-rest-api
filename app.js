@@ -105,7 +105,7 @@ app.use(function(err, req, res, next) {
 var cluster = require('cluster');
 var port = process.env.PORT || 3000;
 
-if (cluster.isMaster) {
+if (cluster.isMaster && false) {
     fs.writeFile(pidFile, process.pid);
     var numWorkers = require('os').cpus().length;
 
